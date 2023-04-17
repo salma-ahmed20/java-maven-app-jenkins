@@ -72,10 +72,11 @@ pipeline {
             steps {
                 script {
                     echo 'Building docker image'
-                    withCredentials([usernamePassword(credetialsId:'dockerhub-repo', passwordVariable:'PASS', usernameVariable:'USER')])
-                    sh 'docker build -t salma101/java-maven-app:jma-2.0 .'
-                    sh "echo $PASS| docker login -u $USER --password-stdin"
-                    sh 'docker push salma101/java-maven-app:jma-2.0'
+                    withCredentials([usernamePassword(credetialsId:'dockerhub-repo', passwordVariable:'PASS', usernameVariable:'USER')]){
+                        sh 'docker build -t salma101/java-maven-app:jma-2.0 .'
+                        sh "echo $PASS| docker login -u $USER --password-stdin"
+                        sh 'docker push salma101/java-maven-app:jma-2.0'
+                    }
                 }
             }
         }
