@@ -1,4 +1,4 @@
-def gv
+/*def gv
 
 pipeline {
     agent any
@@ -51,4 +51,28 @@ pipeline {
             }
         }
     }   
+}
+*/
+
+pipeline{
+    agent any
+    tools{
+        maven 'maven-3.9.1'
+    }
+    stages{
+        stage ("Buils jar"){
+            echo "Building the application"
+            sh "mvn package"
+        }
+        stage("Build docker image"){
+            echo "Building docker image"
+            withCredentials([usernamePassword(credetialsId:'dockerhub-repo',passwordVariable:'PASS',usernameVariable:'USER')])
+            sh "docker build -t salma101/java-maven-app:jma-2.0 ."
+            sh "echo $PASS| docker login -u $USER --password-stdin"
+            sh "docker push salma101/java-maven-app:jma-2.0"
+        }
+        stage ("Deploy"){
+            echo "Deploying the application"
+        }
+    }
 }
