@@ -10,7 +10,7 @@ pipeline {
         stage("init") {
             steps {
                 script {
-                   gv = load "script.groovy" 
+                   gv = load "script.groovy"
                 }
             }
         }
@@ -50,29 +50,41 @@ pipeline {
                 }
             }
         }
-    }   
+    }
 }
 */
 
-pipeline{
+pipeline {
     agent any
-    tools{
+    tools {
         maven 'maven-3.9.1'
     }
-    stages{
-        stage ("Buils jar"){
-            echo "Building the application"
-            sh "mvn package"
+    stages {
+        stage('Buils jar') {
+            steps {
+                script {
+                    echo 'Building the application'
+                    sh 'mvn package'
+                }
+            }
         }
-        stage("Build docker image"){
-            echo "Building docker image"
-            withCredentials([usernamePassword(credetialsId:'dockerhub-repo',passwordVariable:'PASS',usernameVariable:'USER')])
-            sh "docker build -t salma101/java-maven-app:jma-2.0 ."
-            sh "echo $PASS| docker login -u $USER --password-stdin"
-            sh "docker push salma101/java-maven-app:jma-2.0"
+        stage('Build docker image') {
+            steps {
+                script {
+                    echo 'Building docker image'
+                    withCredentials([usernamePassword(credetialsId:'dockerhub-repo', passwordVariable:'PASS', usernameVariable:'USER')])
+                    sh 'docker build -t salma101/java-maven-app:jma-2.0 .'
+                    sh "echo $PASS| docker login -u $USER --password-stdin"
+                    sh 'docker push salma101/java-maven-app:jma-2.0'
+                }
+            }
         }
-        stage ("Deploy"){
-            echo "Deploying the application"
+        stage('Deploy') {
+            steps {
+                script {
+                    echo 'Deploying the application'
+                }
+            }
         }
     }
 }
