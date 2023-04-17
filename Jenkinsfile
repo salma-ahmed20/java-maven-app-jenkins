@@ -1,38 +1,92 @@
-def gv
+/*def gv
 
 pipeline {
     agent any
+    parameters {
+        choice(name: 'VERSION', choices: ['1.1.0', '1.2.0', '1.3.0'], description: '')
+        booleanParam(name: 'executeTests', defaultValue: true, description: '')
+    }
     stages {
         stage("init") {
             steps {
                 script {
-                    gv = load "script.groovy"
+                   gv = load "script.groovy"
                 }
             }
         }
-        stage("build jar") {
+        stage("build") {
             steps {
                 script {
-                    echo "building jar"
-                    //gv.buildJar()
+                    gv.buildApp()
                 }
             }
         }
-        stage("build image") {
+        stage("test") {
+            when {
+                expression {
+                    params.executeTests
+                }
+            }
             steps {
                 script {
-                    echo "building image"
-                    //gv.buildImage()
+                    gv.testApp()
                 }
             }
         }
         stage("deploy") {
+            // input{
+            //     message "Select Environment"
+            //     ok "Done"
+            //     parameters{
+            //         choice(name: 'ENV', choices: ['dev', 'prod', 'stage'], description: '')
+            //     }
+            // }
             steps {
                 script {
-                    echo "deploying"
-                    //gv.deployApp()
+                    env.ENV = input message: "Select Environment",ok: Done,
+                    parameters:[choice(name: 'ENV', choices: ['dev', 'prod', 'stage'], description: '')]
+                    gv.deployApp()
+                    echo "deploying to ${env.ENV}"
                 }
             }
         }
-    }   
+    }
+}
+*/
+def gv
+pipeline {
+    agent any
+    tools {
+        maven 'maven-3.9.1'
+    }
+    stages {
+        stage('init') {
+            steps {
+                script {
+                    gv = load 'script.groovy'
+                }
+            }
+        }
+        stage('Buils jar') {
+            steps {
+                script {
+                    gv.buildJar()
+                }
+            }
+        }
+        stage('Build docker image') {
+            steps {
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
+        stage('Deploy') {
+            steps {
+                script {
+                    gv.deployApp
+                }
+            }
+        }
+    }
 }
