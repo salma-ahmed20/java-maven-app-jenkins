@@ -78,6 +78,7 @@ pipeline {
                     sh 'docker push salma101/java-maven-app:jma-2.0'
                 }
             }
+            }
         }
         stage('Deploy') {
             steps {
@@ -86,5 +87,6 @@ pipeline {
                 }
             }
         }
+    
     }
 }
