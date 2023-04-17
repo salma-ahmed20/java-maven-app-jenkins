@@ -68,20 +68,30 @@ pipeline {
             }
         }
         stage('Buils jar') {
+            when{
+                expression{
+                    BRANCH_NAME == 'main'
+                }
+            }
             steps {
                 script {
                     gv.buildJar()
                 }
             }
         }
-        stage('Build docker image') {
-            steps {
-                script {
-                    gv.buildImage()
+        // stage('Build docker image') {
+        //     steps {
+        //         script {
+        //             gv.buildImage()
+        //         }
+        //     }
+        // }
+        stage('Deploy') {
+             when{
+                expression{
+                    BRANCH_NAME == 'main'
                 }
             }
-        }
-        stage('Deploy') {
             steps {
                 script {
                     gv.deployApp
