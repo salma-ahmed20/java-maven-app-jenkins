@@ -19,7 +19,7 @@ pipeline {
         stage('Buils jar') {
             steps {
                 script {
-                    buildApp()
+                    buildJar()
                 }
             }
         }
