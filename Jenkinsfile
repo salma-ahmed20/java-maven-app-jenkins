@@ -75,17 +75,17 @@ pipeline {
             }
             steps {
                 script {
-                    gv.buildApp()
+                    gv.buildJar()
                 }
             }
         }
-        // stage('Build docker image') {
-        //     steps {
-        //         script {
-        //             gv.buildImage()
-        //         }
-        //     }
-        // }
+        stage('Build docker image') {
+            steps {
+                script {
+                    gv.buildImage()
+                }
+            }
+        }
         stage('Deploy') {
              when{
                 expression{
