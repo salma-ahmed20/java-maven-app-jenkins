@@ -26,7 +26,7 @@ pipeline {
         stage('Build docker image') {
             steps {
                 script {
-                    buildImage()
+                    buildImage 'java-maven-app:jma-4.0'
                 }
             }
         }
