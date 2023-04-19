@@ -23,10 +23,12 @@ pipeline {
                 }
             }
         }
-        stage('Build docker image') {
+        stage('Build and pushdocker image') {
             steps {
                 script {
-                    buildImage 'java-maven-app:jma-4.0'
+                    buildImage 'java-maven-app:jma-5.0'
+                    dockerLogin()
+                    pushImage 'java-maven-app:jma-5.0'
                 }
             }
         }
