@@ -16,6 +16,19 @@ pipeline {
                 }
             }
         }
+        stage('increment version') {
+            steps {
+                script {
+                    echo 'incrementing app version...'
+                    sh 'mvn build-helper:parse-version versions:set \
+                       -DnewVersion=\\\${parsedVersion.majorVersion}.\\\${parsedVersion.minorVersion}.\\\${parsedVersion.nextIncrementalVersion} \
+                        versions:commit'
+                    def matcher = readFile('pom.xml') =~ '<version>(.+)</version>'
+                    def version = matcher[0][1]
+                    VERSION_NUMBER = "$version-$BUILD_NUMBER"
+                }
+            }
+        }
         stage('Buils jar') {
             steps {
                 script {
@@ -26,9 +39,9 @@ pipeline {
         stage('Build and pushdocker image') {
             steps {
                 script {
-                    buildImage 'java-maven-app:jma-5.0'
+                    buildImage "java-maven-app:${VERSION_NUMBER}"
                     dockerLogin()
-                    pushImage 'java-maven-app:jma-5.0'
+                    pushImage "java-maven-app:${VERSION_NUMBER}"
                 }
             }
         }
