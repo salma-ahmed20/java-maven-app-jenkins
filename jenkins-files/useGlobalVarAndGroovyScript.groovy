@@ -1,6 +1,3 @@
-#!/usr/bin/env groovy
-
-@Library('jenkins-shared-library')
 def gv
 
 pipeline {
@@ -17,29 +14,35 @@ pipeline {
             }
         }
         stage('Buils jar') {
+            when{
+                expression{
+                    BRANCH_NAME == 'main'
+                }
+            }
             steps {
                 script {
-                    buildJar()
+                    gv.buildApp()
                 }
             }
         }
-        stage('Build and pushdocker image') {
-            steps {
-                script {
-                    buildImage 'java-maven-app:jma-5.0'
-                    dockerLogin()
-                    pushImage 'java-maven-app:jma-5.0'
-                }
-            }
-        }
-       
+        // stage('Build docker image') {
+        //     steps {
+        //         script {
+        //             gv.buildImage()
+        //         }
+        //     }
+        // }
         stage('Deploy') {
+             when{
+                expression{
+                    BRANCH_NAME == 'main'
+                }
+            }
             steps {
                 script {
-                    gv.deployApp()
+                    gv.deployApp
                 }
             }
         }
     }
 }
-
