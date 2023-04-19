@@ -58,13 +58,13 @@ pipeline {
                 }
             }
         }
-        stage("build") {
-            steps {
-                script {
-                    gv.buildJar()
-                }
-            }
-        }
+        // stage("build") {
+        //     steps {
+        //         script {
+        //             gv.buildJar()
+        //         }
+        //     }
+        // }
         // stage("test") {
         //     when {
         //         expression {

@@ -1,7 +1,7 @@
-def buildJar() {
-    echo 'building the application...'
-    sh 'mvn package'
-}
+// def buildJar() {
+//     echo 'building the application...'
+//     sh 'mvn package'
+// }
 
 def buildImage() {
     echo 'Building docker image'
