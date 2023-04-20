@@ -15,8 +15,8 @@ def deployApp() {
 
 def commitChanges(){
     script.withCredentials([script.usernamePassword(credentialsId: 'github-credentials', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-        sh 'git config --global user.email "salma.ahmed0075@gmail.com"'
-        sh 'git config --global user.name "salma"'
+        sh 'git config --global user.email "jenkins@example.com"'
+        sh 'git config --global user.name "jenkins"'
 
         sh 'git status'
         sh 'git branch'
