@@ -22,7 +22,7 @@ def commitChanges(){
         sh 'git branch'
         sh 'git config --list'
 
-        sh "git remote set-url origin https://${USER}:${PASS}@github.com/salma-ahmed20/java-maven-app-jenkins.git"
+        // sh "git remote set-url origin https://${USER}:${PASS}@github.com/salma-ahmed20/java-maven-app-jenkins.git"
         sh 'git add .'
         sh 'git commit -m "ci: version bump"'
         sh 'git push origin head:jenkins-shared-library'
